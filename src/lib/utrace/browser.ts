@@ -168,6 +168,23 @@ export function parseBootstrapHash(): UTraceBootstrap | null {
       return null;
     }
 
+    const TRUSTED_HOSTS = [
+      "api.utrace.dev",
+      "ws.utrace.dev",
+      "preview.utrace.dev",
+      "localhost",
+      "127.0.0.1",
+    ];
+
+    try {
+      const wsUrl = new URL(parsed.ws_url);
+      if (!["wss:", "ws:"].includes(wsUrl.protocol)) return null;
+      if (wsUrl.protocol === "ws:" && wsUrl.hostname !== "localhost" && wsUrl.hostname !== "127.0.0.1") return null;
+      if (!TRUSTED_HOSTS.includes(wsUrl.hostname)) return null;
+    } catch {
+      return null;
+    }
+
     return parsed;
   } catch {
     return null;
