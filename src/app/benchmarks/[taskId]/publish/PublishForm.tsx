@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BenchmarkTask, BenchmarkRun } from "@/types";
 import RunCard from "@/components/benchmark/RunCard";
@@ -43,7 +43,7 @@ export default function PublishForm({
     color: resultColor[run.result] || "#EAB308",
   }));
 
-  async function handlePublish(e: FormEvent) {
+  async function handlePublish(e: React.SyntheticEvent) {
     e.preventDefault();
     if (loading || !body.trim()) return;
 
@@ -64,6 +64,7 @@ export default function PublishForm({
 
       const data = await res.json();
       router.push(`/feed/${data.id}`);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -75,10 +76,10 @@ export default function PublishForm({
     <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Page header */}
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-[#F4F4F5] tracking-tight">
+        <h1 className="text-2xl font-medium text-[#e7e9ea] tracking-tight">
           Publish to Feed
         </h1>
-        <p className="mt-2 text-sm text-[rgba(244,244,245,0.40)]">
+        <p className="mt-2 text-sm text-[#536471]">
           Preview and publish your benchmark results for &ldquo;{task.title}
           &rdquo;
         </p>
@@ -86,27 +87,27 @@ export default function PublishForm({
 
       {/* Chart Preview */}
       {runs.length > 0 && (
-        <div className="mt-6 bg-[#111113] border border-white/[0.06] rounded-xl p-5 animate-fade-in stagger-1">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-[rgba(244,244,245,0.45)] mb-3">
+        <div className="mt-6 bg-[#0e0f10] border border-white/[0.04] rounded-lg p-5 animate-fade-in stagger-1">
+          <h2 className="text-xs font-medium uppercase tracking-wider text-[#8b8d93] mb-3">
             Chart Preview
           </h2>
           <BarChart items={barChartItems} unit="s" />
           <div className="mt-3 flex items-center gap-4 justify-center">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-              <span className="text-[10px] text-[rgba(244,244,245,0.40)]">
+              <span className="text-[10px] text-[#536471]">
                 Passed
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
-              <span className="text-[10px] text-[rgba(244,244,245,0.40)]">
+              <span className="text-[10px] text-[#536471]">
                 Failed
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#EAB308]" />
-              <span className="text-[10px] text-[rgba(244,244,245,0.40)]">
+              <span className="text-[10px] text-[#536471]">
                 Partial
               </span>
             </div>
@@ -116,22 +117,22 @@ export default function PublishForm({
 
       {/* Feed Post Preview */}
       <div className="mt-6 animate-fade-in stagger-2">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-[rgba(244,244,245,0.45)] mb-3">
+        <h2 className="text-xs font-medium uppercase tracking-wider text-[#8b8d93] mb-3">
           Post Preview
         </h2>
-        <div className="bg-[#111113] border border-white/[0.06] rounded-xl p-5">
+        <div className="bg-[#0e0f10] border border-white/[0.04] rounded-lg p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#38BDF8] to-[#A855F7] flex items-center justify-center text-xs font-bold text-white">
+            <div className="w-8 h-8 rounded-full bg-[#1d9bf0] flex items-center justify-center text-xs font-bold text-white">
               Y
             </div>
             <div>
-              <span className="text-sm font-semibold text-[#F4F4F5]">You</span>
-              <span className="ml-2 text-xs text-[rgba(244,244,245,0.30)]">
+              <span className="text-sm font-medium text-[#e7e9ea]">You</span>
+              <span className="ml-2 text-xs text-[#3d3f45]">
                 just now
               </span>
             </div>
           </div>
-          <p className="text-sm text-[rgba(244,244,245,0.60)] leading-relaxed whitespace-pre-line">
+          <p className="text-sm text-[#8b8d93] leading-relaxed whitespace-pre-line">
             {body || "Your post body will appear here..."}
           </p>
           {runs.length > 0 && (
@@ -164,7 +165,7 @@ export default function PublishForm({
       {/* Agent Results */}
       {runs.length > 0 && (
         <div className="mt-6 animate-fade-in stagger-3">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-[rgba(244,244,245,0.45)] mb-3">
+          <h2 className="text-xs font-medium uppercase tracking-wider text-[#8b8d93] mb-3">
             Agent Results
           </h2>
           <div className="grid gap-4">
@@ -182,7 +183,7 @@ export default function PublishForm({
       >
         <label
           htmlFor="publish-body"
-          className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5"
+          className="block text-sm font-medium text-[#8b8d93] mb-1.5"
         >
           Post body
         </label>
@@ -191,7 +192,7 @@ export default function PublishForm({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={8}
-          className="w-full resize-none rounded-xl border border-white/[0.08] bg-[#09090B] px-4 py-3 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+          className="w-full resize-none rounded-lg border border-white/[0.06] bg-[#000000] px-4 py-3 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
           placeholder="Write about your benchmark results..."
         />
 

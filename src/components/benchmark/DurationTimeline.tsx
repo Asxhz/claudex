@@ -38,7 +38,7 @@ export default function DurationTimeline({
   return (
     <div className="w-full">
       {title && (
-        <h3 className="text-sm font-semibold text-[#F4F4F5] mb-3">{title}</h3>
+        <h3 className="text-sm font-medium text-[#e7e9ea] mb-3">{title}</h3>
       )}
       <svg
         viewBox={`0 0 ${chartWidth} ${totalHeight}`}
@@ -64,7 +64,7 @@ export default function DurationTimeline({
                 y={y + rowHeight / 2}
                 textAnchor="end"
                 dominantBaseline="middle"
-                fill={isFastest ? "#F4F4F5" : "rgba(244,244,245,0.62)"}
+                fill={isFastest ? "#e7e9ea" : "#8b8d93"}
                 fontSize="12"
                 fontWeight={isFastest ? "600" : "400"}
                 fontFamily="inherit"
@@ -139,7 +139,7 @@ export default function DurationTimeline({
                 y={y + rowHeight / 2}
                 textAnchor="start"
                 dominantBaseline="middle"
-                fill="#F4F4F5"
+                fill="#e7e9ea"
                 fontSize="13"
                 fontWeight="600"
                 fontFamily="inherit"

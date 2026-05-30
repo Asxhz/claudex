@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/lib/auth";
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.className} bg-[#09090B] text-[#F4F4F5] antialiased min-h-screen`}
+        className={`${inter.className} bg-black text-[#e7e9ea] antialiased min-h-screen`}
+        style={{ fontFeatureSettings: '"calt", "kern", "liga", "ss03"' }}
       >
         <TopNav user={user} />
         <main className="pt-14">{children}</main>

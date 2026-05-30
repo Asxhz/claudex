@@ -74,7 +74,6 @@ export default async function BenchmarkDetailPage({
 
   // Prepare chart data
   const maxDuration = Math.max(...runs.map((r) => r.duration_ms ?? 0), 1);
-  const maxTokens = Math.max(...runs.map((r) => r.tokens_used ?? 0), 1);
 
   const barChartItems = runs.map((run) => ({
     label: run.agent_name,
@@ -114,11 +113,11 @@ export default async function BenchmarkDetailPage({
 
         {/* Published date */}
         {publishedDate && (
-          <p className="mt-3 text-xs text-[rgba(244,244,245,0.35)]">
+          <p className="mt-3 text-xs text-[#536471]">
             Published by{" "}
             <Link
               href={`/u/${author.handle}`}
-              className="text-[rgba(244,244,245,0.50)] hover:text-[#38BDF8] transition-colors"
+              className="text-[#8b8d93] hover:text-[#1d9bf0] transition-colors duration-150"
             >
               @{author.handle}
             </Link>{" "}
@@ -170,7 +169,7 @@ export default async function BenchmarkDetailPage({
           Share
         </Button>
         {runs.length > 0 && (
-          <span className="ml-auto text-xs text-[rgba(244,244,245,0.35)] flex items-center gap-1.5">
+          <span className="ml-auto text-xs text-[#536471] flex items-center gap-1.5">
             <svg
               width="14"
               height="14"
@@ -195,14 +194,14 @@ export default async function BenchmarkDetailPage({
         <>
           {/* Comparison Overview Chart */}
           <section className="mt-10 animate-fade-in-up stagger-2">
-            <div className="bg-[#111113] border border-white/[0.06] rounded-xl p-6">
+            <div className="bg-[#0e0f10] border border-white/[0.04] rounded-lg p-6">
               <div className="flex items-center gap-2 mb-1">
                 <svg
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="rgba(244,244,245,0.62)"
+                  stroke="#8b8d93"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -211,11 +210,11 @@ export default async function BenchmarkDetailPage({
                   <line x1="12" y1="20" x2="12" y2="4" />
                   <line x1="6" y1="20" x2="6" y2="14" />
                 </svg>
-                <h2 className="text-lg font-semibold text-[#F4F4F5]">
+                <h2 className="text-lg font-medium text-[#e7e9ea]">
                   Comparison Overview
                 </h2>
               </div>
-              <p className="text-xs text-[rgba(244,244,245,0.35)] mb-5">
+              <p className="text-xs text-[#536471] mb-5">
                 Duration by agent, color-coded by result
               </p>
               <BarChart items={barChartItems} unit="s" />
@@ -223,19 +222,19 @@ export default async function BenchmarkDetailPage({
               <div className="mt-4 flex items-center gap-5 justify-center">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E]" />
-                  <span className="text-[10px] text-[rgba(244,244,245,0.45)]">
+                  <span className="text-[10px] text-[#8b8d93]">
                     Passed
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
-                  <span className="text-[10px] text-[rgba(244,244,245,0.45)]">
+                  <span className="text-[10px] text-[#8b8d93]">
                     Failed
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#EAB308]" />
-                  <span className="text-[10px] text-[rgba(244,244,245,0.45)]">
+                  <span className="text-[10px] text-[#8b8d93]">
                     Partial
                   </span>
                 </div>
@@ -246,14 +245,14 @@ export default async function BenchmarkDetailPage({
           {/* Token Usage + Duration side by side */}
           <section className="mt-6 grid md:grid-cols-2 gap-6 animate-fade-in-up stagger-3">
             {/* Token Usage */}
-            <div className="bg-[#111113] border border-white/[0.06] rounded-xl p-6">
+            <div className="bg-[#0e0f10] border border-white/[0.04] rounded-lg p-6">
               <div className="flex items-center gap-2 mb-1">
                 <svg
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="rgba(244,244,245,0.62)"
+                  stroke="#8b8d93"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -261,25 +260,25 @@ export default async function BenchmarkDetailPage({
                   <path d="M12 2a10 10 0 1 0 10 10" />
                   <path d="M12 2v10l6.93 4" />
                 </svg>
-                <h2 className="text-lg font-semibold text-[#F4F4F5]">
+                <h2 className="text-lg font-medium text-[#e7e9ea]">
                   Token Usage
                 </h2>
               </div>
-              <p className="text-xs text-[rgba(244,244,245,0.35)] mb-4">
+              <p className="text-xs text-[#536471] mb-4">
                 Total tokens consumed per agent
               </p>
               <TokenChart agents={tokenChartAgents} />
             </div>
 
             {/* Duration Comparison */}
-            <div className="bg-[#111113] border border-white/[0.06] rounded-xl p-6">
+            <div className="bg-[#0e0f10] border border-white/[0.04] rounded-lg p-6">
               <div className="flex items-center gap-2 mb-1">
                 <svg
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="rgba(244,244,245,0.62)"
+                  stroke="#8b8d93"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -287,11 +286,11 @@ export default async function BenchmarkDetailPage({
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12,6 12,12 16,14" />
                 </svg>
-                <h2 className="text-lg font-semibold text-[#F4F4F5]">
+                <h2 className="text-lg font-medium text-[#e7e9ea]">
                   Duration
                 </h2>
               </div>
-              <p className="text-xs text-[rgba(244,244,245,0.35)] mb-4">
+              <p className="text-xs text-[#536471] mb-4">
                 Time to completion
               </p>
               <DurationTimeline agents={durationAgents} />
@@ -306,7 +305,7 @@ export default async function BenchmarkDetailPage({
                 height="18"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="rgba(244,244,245,0.62)"
+                stroke="#8b8d93"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -315,7 +314,7 @@ export default async function BenchmarkDetailPage({
                 <line x1="8" y1="21" x2="16" y2="21" />
                 <line x1="12" y1="17" x2="12" y2="21" />
               </svg>
-              <h2 className="text-lg font-semibold text-[#F4F4F5]">
+              <h2 className="text-lg font-medium text-[#e7e9ea]">
                 Detailed Agent Results
               </h2>
             </div>
@@ -341,7 +340,7 @@ export default async function BenchmarkDetailPage({
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="rgba(244,244,245,0.25)"
+              stroke="#3d3f45"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -351,10 +350,10 @@ export default async function BenchmarkDetailPage({
               <line x1="6" y1="20" x2="6" y2="14" />
             </svg>
           </div>
-          <p className="text-sm text-[rgba(244,244,245,0.40)]">
+          <p className="text-sm text-[#536471]">
             No benchmark runs yet.
           </p>
-          <p className="mt-1 text-xs text-[rgba(244,244,245,0.25)]">
+          <p className="mt-1 text-xs text-[#3d3f45]">
             Run agents against this task to see results here.
           </p>
         </div>

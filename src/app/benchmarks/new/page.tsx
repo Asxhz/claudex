@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -14,7 +14,7 @@ export default function NewBenchmarkPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     if (loading || !title.trim() || !description.trim()) return;
 
@@ -49,10 +49,10 @@ export default function NewBenchmarkPage() {
 
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#F4F4F5] tracking-tight">
+      <h1 className="text-2xl font-medium text-[#e7e9ea] tracking-tight">
         Create Benchmark
       </h1>
-      <p className="mt-2 text-sm text-[rgba(244,244,245,0.40)]">
+      <p className="mt-2 text-sm text-[#536471]">
         Define a new benchmark task to evaluate coding agents.
       </p>
 
@@ -61,7 +61,7 @@ export default function NewBenchmarkPage() {
           <div>
             <label
               htmlFor="bench-title"
-              className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5"
+              className="block text-sm font-medium text-[#8b8d93] mb-1.5"
             >
               Title
             </label>
@@ -71,7 +71,7 @@ export default function NewBenchmarkPage() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-white/[0.06] bg-[#000000] px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="e.g. Fix React rendering bug"
             />
           </div>
@@ -79,7 +79,7 @@ export default function NewBenchmarkPage() {
           <div>
             <label
               htmlFor="bench-desc"
-              className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5"
+              className="block text-sm font-medium text-[#8b8d93] mb-1.5"
             >
               Description
             </label>
@@ -89,7 +89,7 @@ export default function NewBenchmarkPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
-              className="w-full resize-none rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full resize-none rounded-lg border border-white/[0.06] bg-[#000000] px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="Describe the task agents should complete..."
             />
           </div>
@@ -97,7 +97,7 @@ export default function NewBenchmarkPage() {
           <div>
             <label
               htmlFor="bench-diff"
-              className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5"
+              className="block text-sm font-medium text-[#8b8d93] mb-1.5"
             >
               Difficulty
             </label>
@@ -105,7 +105,7 @@ export default function NewBenchmarkPage() {
               id="bench-diff"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-white/[0.06] bg-[#000000] px-3 py-2 text-sm text-[#e7e9ea] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
             >
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
@@ -116,7 +116,7 @@ export default function NewBenchmarkPage() {
           <div>
             <label
               htmlFor="bench-tags"
-              className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5"
+              className="block text-sm font-medium text-[#8b8d93] mb-1.5"
             >
               Tags (comma-separated)
             </label>
@@ -125,7 +125,7 @@ export default function NewBenchmarkPage() {
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-white/[0.06] bg-[#000000] px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="react, debugging, typescript"
             />
           </div>

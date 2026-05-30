@@ -27,18 +27,18 @@ export default function AgentResultCard({
     <Card>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-[#F4F4F5] truncate">{agentName}</p>
+          <p className="text-sm font-medium text-[#e7e9ea] truncate">{agentName}</p>
           {agentModel && (
-            <p className="text-xs text-[rgba(244,244,245,0.40)] mt-0.5">{agentModel}</p>
+            <p className="text-xs text-[#536471] mt-0.5">{agentModel}</p>
           )}
         </div>
         <Badge result={normalizeResult(result)} />
       </div>
 
-      <p className="mt-3 text-sm text-[rgba(244,244,245,0.62)] leading-relaxed">{explanation}</p>
+      <p className="mt-3 text-sm text-[#8b8d93] leading-relaxed">{explanation}</p>
 
       {(durationMs != null || tokensUsed != null) && (
-        <div className="mt-4 flex items-center gap-4 text-xs text-[rgba(244,244,245,0.40)]">
+        <div className="mt-4 flex items-center gap-4 text-xs text-[#536471]">
           {durationMs != null && (
             <span>{(durationMs / 1000).toFixed(1)}s</span>
           )}

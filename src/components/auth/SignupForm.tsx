@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 
@@ -13,7 +13,7 @@ export default function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     if (loading) return;
 
@@ -38,6 +38,7 @@ export default function SignupForm() {
       }
 
       router.push("/dashboard");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -47,15 +48,15 @@ export default function SignupForm() {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      <div className="bg-[#111113] border border-white/[0.08] rounded-xl p-6">
-        <h2 className="text-lg font-semibold text-[#F4F4F5]">Create your account</h2>
-        <p className="mt-1 text-sm text-[rgba(244,244,245,0.40)]">
+      <div className="bg-[#0e0f10] border border-[#2f3336] rounded-lg p-6">
+        <h2 className="text-lg font-medium text-[#e7e9ea]">Create your account</h2>
+        <p className="mt-1 text-sm text-[#536471]">
           Join Claudex and start benchmarking
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label htmlFor="signup-name" className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5">
+            <label htmlFor="signup-name" className="block text-sm font-medium text-[#8b8d93] mb-1.5">
               Display name
             </label>
             <input
@@ -64,13 +65,13 @@ export default function SignupForm() {
               required
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-[#2f3336] bg-black px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="Jane Doe"
             />
           </div>
 
           <div>
-            <label htmlFor="signup-handle" className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5">
+            <label htmlFor="signup-handle" className="block text-sm font-medium text-[#8b8d93] mb-1.5">
               Handle
             </label>
             <input
@@ -79,13 +80,13 @@ export default function SignupForm() {
               required
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-[#2f3336] bg-black px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="janedoe"
             />
           </div>
 
           <div>
-            <label htmlFor="signup-email" className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5">
+            <label htmlFor="signup-email" className="block text-sm font-medium text-[#8b8d93] mb-1.5">
               Email
             </label>
             <input
@@ -94,13 +95,13 @@ export default function SignupForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-[#2f3336] bg-black px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label htmlFor="signup-password" className="block text-sm font-medium text-[rgba(244,244,245,0.62)] mb-1.5">
+            <label htmlFor="signup-password" className="block text-sm font-medium text-[#8b8d93] mb-1.5">
               Password
             </label>
             <input
@@ -109,7 +110,7 @@ export default function SignupForm() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-white/[0.08] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.40)] focus:outline-none focus:border-[#38BDF8]/50 transition-colors"
+              className="w-full rounded-lg border border-[#2f3336] bg-black px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="********"
             />
           </div>
@@ -117,7 +118,33 @@ export default function SignupForm() {
           {error && <p className="text-xs text-[#EF4444]">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Sign up"}
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
+                </svg>
+                Creating account...
+              </>
+            ) : (
+              "Sign up"
+            )}
           </Button>
         </form>
       </div>

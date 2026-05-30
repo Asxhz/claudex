@@ -30,7 +30,7 @@ export default function AgentResultBadge({ agentName, result }: AgentResultBadge
   return (
     <span className={`inline-flex items-center gap-1.5 ${s.bg} border ${s.border} rounded-full px-2.5 py-1 text-xs`}>
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      <span className="font-medium text-[rgba(244,244,245,0.85)]">{agentName}</span>
+      <span className="font-medium text-[#e7e9ea]">{agentName}</span>
       <span className={`font-medium capitalize ${s.text}`}>{result}</span>
     </span>
   );

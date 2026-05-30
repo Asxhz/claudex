@@ -135,7 +135,7 @@ export default function RunCard({ run }: RunCardProps) {
 
   return (
     <div
-      className={`rounded-xl border border-white/[0.06] ${config.bg} border-l-[3px] ${config.border} overflow-hidden transition-all duration-200 hover:border-white/[0.12]`}
+      className={`rounded-lg border border-white/[0.04] ${config.bg} border-l-[3px] ${config.border} overflow-hidden transition-colors duration-150 hover:border-white/[0.12]`}
     >
       {/* Header */}
       <div className="px-5 pt-5 pb-4">
@@ -147,11 +147,11 @@ export default function RunCard({ run }: RunCardProps) {
               style={{ backgroundColor: agentColor }}
             />
             <div className="min-w-0">
-              <p className="text-base font-semibold text-[#F4F4F5] truncate">
+              <p className="text-base font-medium text-[#e7e9ea] truncate">
                 {run.agent_name}
               </p>
               {run.agent_model && (
-                <p className="text-xs text-[rgba(244,244,245,0.40)] mt-0.5">
+                <p className="text-xs text-[#536471] mt-0.5">
                   {run.agent_model}
                 </p>
               )}
@@ -168,41 +168,41 @@ export default function RunCard({ run }: RunCardProps) {
         </div>
 
         {/* Explanation */}
-        <p className="mt-4 text-sm text-[rgba(244,244,245,0.65)] leading-relaxed">
+        <p className="mt-4 text-sm text-[#8b8d93] leading-relaxed">
           {run.explanation}
         </p>
       </div>
 
       {/* Metrics bar */}
       {(run.duration_ms != null || run.tokens_used != null) && (
-        <div className="px-5 py-3 border-t border-white/[0.06] bg-white/[0.02]">
+        <div className="px-5 py-3 border-t border-white/[0.04] bg-white/[0.02]">
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[rgba(244,244,245,0.35)] mb-0.5">
+              <p className="text-[10px] uppercase tracking-wider text-[#536471] mb-0.5">
                 Duration
               </p>
-              <p className="text-sm font-semibold text-[#F4F4F5]">
+              <p className="text-sm font-bold text-[#e7e9ea]">
                 {run.duration_ms != null
                   ? `${(run.duration_ms / 1000).toFixed(1)}s`
                   : "--"}
               </p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[rgba(244,244,245,0.35)] mb-0.5">
+              <p className="text-[10px] uppercase tracking-wider text-[#536471] mb-0.5">
                 Tokens
               </p>
-              <p className="text-sm font-semibold text-[#F4F4F5]">
+              <p className="text-sm font-bold text-[#e7e9ea]">
                 {run.tokens_used != null
                   ? run.tokens_used.toLocaleString()
                   : "--"}
               </p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[rgba(244,244,245,0.35)] mb-0.5">
+              <p className="text-[10px] uppercase tracking-wider text-[#536471] mb-0.5">
                 Result
               </p>
               <p
-                className="text-sm font-semibold capitalize"
+                className="text-sm font-bold capitalize"
                 style={{
                   color:
                     result === "passed"
@@ -220,15 +220,15 @@ export default function RunCard({ run }: RunCardProps) {
       )}
 
       {/* Analysis section */}
-      <div className="px-5 py-4 border-t border-white/[0.06]">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[rgba(244,244,245,0.45)] mb-2.5">
+      <div className="px-5 py-4 border-t border-white/[0.04]">
+        <p className="text-xs font-medium uppercase tracking-wider text-[#8b8d93] mb-2.5">
           {analysis.heading}
         </p>
         <ul className="space-y-1.5">
           {analysis.points.map((point, idx) => (
             <li
               key={idx}
-              className="flex items-start gap-2 text-sm text-[rgba(244,244,245,0.55)] leading-relaxed"
+              className="flex items-start gap-2 text-sm text-[#8b8d93] leading-relaxed"
             >
               <span
                 className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
@@ -242,10 +242,10 @@ export default function RunCard({ run }: RunCardProps) {
         {/* Verdict */}
         <div className="mt-3 pt-3 border-t border-white/[0.04]">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[rgba(244,244,245,0.30)]">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#3d3f45]">
               Verdict
             </span>
-            <span className="text-xs text-[rgba(244,244,245,0.50)]">
+            <span className="text-xs text-[#8b8d93]">
               {analysis.verdict}
             </span>
           </div>

@@ -28,7 +28,7 @@ export default function BarChart({ items, title, unit = "" }: BarChartProps) {
   return (
     <div className="w-full">
       {title && (
-        <h3 className="text-sm font-semibold text-[#F4F4F5] mb-3">{title}</h3>
+        <h3 className="text-sm font-medium text-[#e7e9ea] mb-3">{title}</h3>
       )}
       <svg
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
@@ -52,7 +52,7 @@ export default function BarChart({ items, title, unit = "" }: BarChartProps) {
                 textAnchor="end"
                 dominantBaseline="middle"
                 className="text-xs"
-                fill="rgba(244,244,245,0.62)"
+                fill="#8b8d93"
                 fontSize="12"
                 fontFamily="inherit"
               >
@@ -83,28 +83,13 @@ export default function BarChart({ items, title, unit = "" }: BarChartProps) {
                 }}
               />
 
-              {/* Bar glow */}
-              <rect
-                x={labelWidth}
-                y={y + 4}
-                width={barWidth}
-                height={barHeight - 8}
-                rx={6}
-                fill={item.color}
-                opacity={0.15}
-                filter="url(#barGlow)"
-                style={{
-                  transition: "width 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-              />
-
               {/* Value */}
               <text
                 x={labelWidth + barAreaWidth + 12}
                 y={y + barHeight / 2 + 1}
                 textAnchor="start"
                 dominantBaseline="middle"
-                fill="#F4F4F5"
+                fill="#e7e9ea"
                 fontSize="12"
                 fontWeight="600"
                 fontFamily="inherit"
@@ -122,7 +107,7 @@ export default function BarChart({ items, title, unit = "" }: BarChartProps) {
                   y={y + barHeight / 2 + 15}
                   textAnchor="start"
                   dominantBaseline="middle"
-                  fill="rgba(244,244,245,0.35)"
+                  fill="#536471"
                   fontSize="10"
                   fontFamily="inherit"
                 >
@@ -132,12 +117,6 @@ export default function BarChart({ items, title, unit = "" }: BarChartProps) {
             </g>
           );
         })}
-
-        <defs>
-          <filter id="barGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
-          </filter>
-        </defs>
       </svg>
     </div>
   );

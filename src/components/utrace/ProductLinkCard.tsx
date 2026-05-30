@@ -44,13 +44,13 @@ export default function ProductLinkCard({ user, state, callbackUrl }: ProductLin
   return (
     <Card className="max-w-md mx-auto">
       <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-xl bg-[rgba(56,189,248,0.10)] flex items-center justify-center mb-4">
+        <div className="w-12 h-12 rounded-lg bg-[rgba(29,155,240,0.10)] flex items-center justify-center mb-4">
           <svg
             width="24"
             height="24"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#38BDF8"
+            stroke="#1d9bf0"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -60,20 +60,20 @@ export default function ProductLinkCard({ user, state, callbackUrl }: ProductLin
           </svg>
         </div>
 
-        <h3 className="text-base font-semibold text-[#F4F4F5]">Connect Your Claudex Account</h3>
-        <p className="mt-1 text-sm text-[rgba(244,244,245,0.40)]">
+        <h3 className="text-base font-medium text-[#e7e9ea]">Connect Your Claudex Account</h3>
+        <p className="mt-1 text-sm text-[#536471]">
           A third-party service is requesting access to verify your identity
         </p>
 
-        <div className="mt-5 flex items-center gap-3 rounded-lg border border-white/[0.08] px-4 py-3 w-full">
+        <div className="mt-5 flex items-center gap-3 rounded-lg border border-white/[0.06] px-4 py-3 w-full">
           <Avatar handle={user.handle} displayName={user.display_name} size="sm" />
           <div className="text-left min-w-0">
-            <p className="text-sm font-medium text-[#F4F4F5] truncate">{user.display_name}</p>
-            <p className="text-xs text-[rgba(244,244,245,0.40)]">@{user.handle}</p>
+            <p className="text-sm font-medium text-[#e7e9ea] truncate">{user.display_name}</p>
+            <p className="text-xs text-[#536471]">@{user.handle}</p>
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-[rgba(244,244,245,0.30)] leading-relaxed">
+        <p className="mt-4 text-xs text-[#3d3f45] leading-relaxed">
           This will share your display name, handle, and account ID with the requesting service.
           No passwords or private data will be shared.
         </p>

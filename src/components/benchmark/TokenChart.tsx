@@ -25,7 +25,7 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
   return (
     <div className="w-full">
       {title && (
-        <h3 className="text-sm font-semibold text-[#F4F4F5] mb-3">{title}</h3>
+        <h3 className="text-sm font-medium text-[#e7e9ea] mb-3">{title}</h3>
       )}
       <svg
         viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -43,7 +43,7 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
                 y1={lineY}
                 x2={startX + totalBarsWidth + 10}
                 y2={lineY}
-                stroke="rgba(255,255,255,0.06)"
+                stroke="rgba(255,255,255,0.04)"
                 strokeDasharray="4 4"
               />
               <text
@@ -51,7 +51,7 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
                 y={lineY + 1}
                 textAnchor="end"
                 dominantBaseline="middle"
-                fill="rgba(244,244,245,0.25)"
+                fill="#3d3f45"
                 fontSize="9"
                 fontFamily="inherit"
               >
@@ -67,7 +67,7 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
           y1={topPadding + barAreaHeight}
           x2={startX + totalBarsWidth + 10}
           y2={topPadding + barAreaHeight}
-          stroke="rgba(255,255,255,0.08)"
+          stroke="rgba(255,255,255,0.06)"
         />
 
         {agents.map((agent, i) => {
@@ -102,26 +102,12 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
                 }}
               />
 
-              {/* Bar gradient overlay */}
-              <rect
-                x={x}
-                y={y}
-                width={barWidth}
-                height={height}
-                rx={8}
-                fill={`url(#tokenGrad_${i})`}
-                style={{
-                  transition:
-                    "height 0.8s cubic-bezier(0.22, 1, 0.36, 1), y 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-              />
-
               {/* Token count on top */}
               <text
                 x={x + barWidth / 2}
                 y={y - 8}
                 textAnchor="middle"
-                fill="#F4F4F5"
+                fill="#e7e9ea"
                 fontSize="11"
                 fontWeight="600"
                 fontFamily="inherit"
@@ -134,25 +120,12 @@ export default function TokenChart({ agents, title }: TokenChartProps) {
                 x={x + barWidth / 2}
                 y={topPadding + barAreaHeight + 16}
                 textAnchor="middle"
-                fill="rgba(244,244,245,0.62)"
+                fill="#8b8d93"
                 fontSize="11"
                 fontFamily="inherit"
               >
                 {agent.name}
               </text>
-
-              <defs>
-                <linearGradient
-                  id={`tokenGrad_${i}`}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-                  <stop offset="100%" stopColor="white" stopOpacity="0" />
-                </linearGradient>
-              </defs>
             </g>
           );
         })}

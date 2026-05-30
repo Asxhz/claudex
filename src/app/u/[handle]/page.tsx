@@ -56,33 +56,33 @@ export default async function UserProfilePage({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="h-32 bg-gradient-to-r from-[#6366F1]/20 via-[#A855F7]/20 to-[#6366F1]/10" />
+      <div className="h-32 bg-[#141517]" />
 
-      <div className="px-4 pb-4 border-b border-white/[0.08]">
+      <div className="px-4 pb-4 border-b border-[#2f3336]">
         <div className="-mt-10 flex items-end justify-between">
-          <div className="ring-4 ring-[#09090B] rounded-full">
+          <div className="ring-4 ring-[#000000] rounded-full">
             <Avatar handle={user.handle} displayName={user.display_name} size="lg" />
           </div>
           <Link
             href={`/benchmarks/new`}
-            className="text-sm font-medium px-4 py-1.5 rounded-full border border-white/[0.14] text-[#F4F4F5] hover:bg-white/[0.04] transition-colors"
+            className="text-sm font-medium px-4 py-1.5 rounded-full border border-white/[0.12] text-[#e7e9ea] hover:bg-white/[0.04] transition-colors duration-150"
           >
             View Benchmarks
           </Link>
         </div>
 
         <div className="mt-3">
-          <h1 className="text-xl font-bold text-[#F4F4F5]">{user.display_name}</h1>
-          <p className="text-[15px] text-[rgba(244,244,245,0.40)]">@{user.handle}</p>
+          <h1 className="text-xl font-bold text-[#e7e9ea]">{user.display_name}</h1>
+          <p className="text-[15px] text-[#536471]">@{user.handle}</p>
         </div>
 
         {user.bio && (
-          <p className="mt-2 text-[15px] text-[rgba(244,244,245,0.62)] leading-relaxed">
+          <p className="mt-2 text-[15px] text-[#8b8d93] leading-relaxed">
             {user.bio}
           </p>
         )}
 
-        <div className="mt-3 flex items-center gap-4 text-sm text-[rgba(244,244,245,0.40)]">
+        <div className="mt-3 flex items-center gap-4 text-sm text-[#536471]">
           {user.created_at && (
             <span className="flex items-center gap-1">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,12 +98,12 @@ export default async function UserProfilePage({
 
         <div className="mt-3 flex items-center gap-5 text-sm">
           <span>
-            <span className="font-semibold text-[#F4F4F5]">{taskCount[0]?.count ?? 0}</span>
-            <span className="text-[rgba(244,244,245,0.40)]"> Benchmarks</span>
+            <span className="font-bold text-[#e7e9ea]">{taskCount[0]?.count ?? 0}</span>
+            <span className="text-[#536471]"> Benchmarks</span>
           </span>
           <span>
-            <span className="font-semibold text-[#F4F4F5]">{postCount}</span>
-            <span className="text-[rgba(244,244,245,0.40)]"> Posts</span>
+            <span className="font-bold text-[#e7e9ea]">{postCount}</span>
+            <span className="text-[#536471]"> Posts</span>
           </span>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default async function UserProfilePage({
       <div>
         {posts.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-[15px] text-[rgba(244,244,245,0.40)]">No posts yet.</p>
+            <p className="text-[15px] text-[#536471]">No posts yet.</p>
           </div>
         ) : (
           posts.map((row) => (

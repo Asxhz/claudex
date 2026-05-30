@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 body {
-  background-color: #09090B;
-  color: #F4F4F5;
+  background-color: #000000;
+  color: #e7e9ea;
+  font-feature-settings: "calt", "kern", "liga", "ss03";
+  letter-spacing: -0.01em;
 }
 
 /* Smooth scrollbar */
@@ -16,74 +18,74 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(244, 244, 245, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(244, 244, 245, 0.16);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* Firefox scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(244, 244, 245, 0.08) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
 }
 
 input,
 textarea,
 select {
   background-color: transparent;
-  color: #F4F4F5;
-  border-color: rgba(255, 255, 255, 0.08);
+  color: #e7e9ea;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: rgba(244, 244, 245, 0.35);
+  color: #536471;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: rgba(99, 102, 241, 0.5);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.08);
+  border-color: rgba(29, 155, 240, 0.5);
+  box-shadow: 0 0 0 2px rgba(29, 155, 240, 0.08);
 }
 
 /* Twitter-like action button hover effects */
 .action-comment:hover {
-  color: #1D9BF0;
+  color: #1d9bf0;
   background-color: rgba(29, 155, 240, 0.1);
 }
 
 .action-repost:hover {
-  color: #00BA7C;
+  color: #00ba7c;
   background-color: rgba(0, 186, 124, 0.1);
 }
 
 .action-like:hover {
-  color: #F91880;
+  color: #f91880;
   background-color: rgba(249, 24, 128, 0.1);
 }
 
 .action-share:hover {
-  color: #1D9BF0;
+  color: #1d9bf0;
   background-color: rgba(29, 155, 240, 0.1);
 }
 
 .action-bookmark:hover {
-  color: #1D9BF0;
+  color: #1d9bf0;
   background-color: rgba(29, 155, 240, 0.1);
 }
 
 /* Feed sidebar nav items */
 .nav-item {
-  transition: background-color 0.2s ease;
+  transition: background-color 150ms ease;
 }
 
 .nav-item:hover {
-  background-color: rgba(244, 244, 245, 0.06);
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .nav-item.active {
@@ -146,16 +148,6 @@ select:focus {
 .stagger-5 { animation-delay: 0.25s; }
 .stagger-6 { animation-delay: 0.3s; }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 25%, #A78BFA 50%, #6366F1 75%, #818CF8 100%);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-x 4s ease infinite;
-}
-
 /* Post hover */
 .post-hover:hover {
   background-color: rgba(255, 255, 255, 0.02);
@@ -169,8 +161,8 @@ select:focus {
     left: 0;
     right: 0;
     z-index: 50;
-    background-color: rgba(9, 9, 11, 0.95);
+    background-color: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
   }
 }

@@ -146,7 +146,7 @@ export default function CommentThread({ initialComments, postId }: CommentThread
   return (
     <div>
       {/* Reply input area - Twitter style */}
-      <form onSubmit={handleSubmit} className="px-4 py-3 border-b border-white/[0.08]">
+      <form onSubmit={handleSubmit} className="px-4 py-3 border-b border-[#2f3336]">
         <div className="flex items-start gap-3">
           <Avatar handle="you" displayName="You" size="md" />
           <div className="flex-1 pt-2">
@@ -155,14 +155,14 @@ export default function CommentThread({ initialComments, postId }: CommentThread
               onChange={(e) => setBody(e.target.value)}
               placeholder="Post your reply"
               rows={2}
-              className="w-full resize-none bg-transparent text-[17px] text-[#F4F4F5] placeholder:text-[rgba(244,244,245,0.35)] focus:outline-none border-none"
+              className="w-full resize-none bg-transparent text-[17px] text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none border-none"
             />
             {error && <p className="mt-1 text-xs text-[#EF4444]">{error}</p>}
-            <div className="flex items-center justify-end pt-2 border-t border-white/[0.08]">
+            <div className="flex items-center justify-end pt-2 border-t border-[#2f3336]">
               <button
                 type="submit"
                 disabled={!body.trim() || loading}
-                className="bg-[#6366F1] hover:bg-[#5558E6] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-[15px] rounded-full px-5 py-1.5 transition-colors cursor-pointer"
+                className="bg-[#1d9bf0] hover:bg-[#1a8cd8] disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium text-[15px] rounded-full px-5 py-1.5 transition-colors duration-150 cursor-pointer"
               >
                 {loading ? "Posting..." : "Reply"}
               </button>
@@ -173,10 +173,10 @@ export default function CommentThread({ initialComments, postId }: CommentThread
 
       {/* New comments pill */}
       {showNewPill && pendingCount > 0 && (
-        <div className="sticky top-0 z-10 flex justify-center py-2 border-b border-white/[0.08]">
+        <div className="sticky top-0 z-10 flex justify-center py-2 border-b border-[#2f3336]">
           <button
             onClick={handleDismissPill}
-            className="rounded-full bg-[#6366F1]/90 px-4 py-1.5 text-[13px] font-medium text-white shadow-lg backdrop-blur-sm hover:bg-[#6366F1] transition-colors"
+            className="rounded-full bg-[#1d9bf0]/90 px-4 py-1.5 text-[13px] font-medium text-white shadow-lg backdrop-blur-sm hover:bg-[#1d9bf0] transition-colors duration-150"
           >
             Show {pendingCount} new {pendingCount !== 1 ? "replies" : "reply"}
           </button>
@@ -188,7 +188,7 @@ export default function CommentThread({ initialComments, postId }: CommentThread
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="px-4 py-3 border-b border-white/[0.08] post-hover transition-colors duration-200"
+            className="px-4 py-3 border-b border-[#2f3336] post-hover transition-colors duration-150"
             style={{
               animation: newCommentIds.has(comment.id)
                 ? "commentFadeIn 300ms ease-out forwards"
@@ -205,47 +205,47 @@ export default function CommentThread({ initialComments, postId }: CommentThread
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1">
-                  <span className="text-[15px] font-bold text-[#F4F4F5] leading-5">
+                  <span className="text-[15px] font-bold text-[#e7e9ea] leading-5">
                     {comment.author.display_name}
                   </span>
-                  <span className="text-[15px] text-[rgba(244,244,245,0.45)] leading-5">
+                  <span className="text-[15px] text-[#8b8d93] leading-5">
                     @{comment.author.handle}
                   </span>
                   {comment.created_at && (
                     <>
-                      <span className="text-[rgba(244,244,245,0.30)]">&middot;</span>
-                      <span className="text-[15px] text-[rgba(244,244,245,0.45)] leading-5">
+                      <span className="text-[#3d3f45]">&middot;</span>
+                      <span className="text-[15px] text-[#536471] leading-5">
                         {timeAgo(new Date(comment.created_at))}
                       </span>
                     </>
                   )}
                 </div>
-                <p className="mt-0.5 text-[15px] text-[#F4F4F5] leading-[1.5]">
+                <p className="mt-0.5 text-[15px] text-[#e7e9ea] leading-[1.5]">
                   {comment.body}
                 </p>
 
                 {/* Comment action bar */}
                 <div className="mt-2 flex items-center gap-8 -ml-2">
-                  <button className="p-1.5 rounded-full action-comment transition-colors duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[rgba(244,244,245,0.35)]">
+                  <button className="p-1.5 rounded-full action-comment transition-colors duration-150">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#536471]">
                       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </button>
-                  <button className="p-1.5 rounded-full action-repost transition-colors duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[rgba(244,244,245,0.35)]">
+                  <button className="p-1.5 rounded-full action-repost transition-colors duration-150">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#536471]">
                       <path d="M17 1l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M3 11V9a4 4 0 0 1 4-4h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M7 23l-4-4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M21 13v2a4 4 0 0 1-4 4H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </button>
-                  <button className="p-1.5 rounded-full action-like transition-colors duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[rgba(244,244,245,0.35)]">
+                  <button className="p-1.5 rounded-full action-like transition-colors duration-150">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#536471]">
                       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </button>
-                  <button className="p-1.5 rounded-full action-share transition-colors duration-200">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[rgba(244,244,245,0.35)]">
+                  <button className="p-1.5 rounded-full action-share transition-colors duration-150">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#536471]">
                       <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <polyline points="16,6 12,2 8,6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <line x1="12" y1="2" x2="12" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

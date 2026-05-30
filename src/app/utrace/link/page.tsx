@@ -15,7 +15,7 @@ export default async function UtraceLinkPage({
   if (!state || !callback_url) {
     return (
       <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4">
-        <p className="text-sm text-[rgba(244,244,245,0.40)]">
+        <p className="text-sm text-[#536471]">
           Missing required parameters.
         </p>
       </div>
