@@ -1,8 +1,10 @@
 export interface UTraceBootstrap {
-  ws_url: string;
-  session_id: string;
-  preview_id: string;
-  client_id: string;
+  version: number;
+  sessionId: string;
+  previewId: string;
+  websocketPath: string;
+  previewSocketToken: string;
+  expiresAt: string;
 }
 
 export interface RouteState {
@@ -72,12 +74,20 @@ export interface StateAssertion {
   metadata?: Record<string, unknown>;
 }
 
-export type UTraceMessage =
-  | { type: "route_state"; payload: RouteState; timestamp: string }
-  | { type: "target_registry"; payload: TargetEntry[]; timestamp: string }
-  | { type: "interaction"; payload: InteractionEvent; timestamp: string }
-  | { type: "api_observation"; payload: ApiObservation; timestamp: string }
-  | { type: "state_assertion_observed"; payload: StateAssertion & { matched: boolean }; timestamp: string }
-  | { type: "error"; payload: { message: string; stack_hash: string; source: string }; timestamp: string }
-  | { type: "dom_summary"; payload: Record<string, unknown>; timestamp: string }
-  | { type: "heartbeat"; payload: { uptime_ms: number }; timestamp: string };
+export interface TelemetryBundlePayload {
+  route_state: RouteState | null;
+  target_registry: TargetEntry[];
+  dom_summary: Record<string, unknown> | null;
+  accessibility_summary: Record<string, unknown> | null;
+  meaningful: boolean;
+}
+
+export interface PreviewMessage {
+  type: string;
+  message_id: string;
+  sent_at: string;
+  source: "preview_sdk";
+  session_id: string;
+  preview_id: string;
+  payload: unknown;
+}

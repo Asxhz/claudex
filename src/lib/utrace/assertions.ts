@@ -1,4 +1,4 @@
-import type { NormalizedBenchmarkResult, StateAssertion } from "./types";
+import type { NormalizedBenchmarkResult } from "./types";
 import type { UTraceClient } from "./browser";
 
 const DRAFT_STORAGE_KEY = "utrace_pre_publish_results";
@@ -43,7 +43,7 @@ export function emitLabelAssertion(
   draftResults: AgentResult[],
   renderedResults: AgentResult[]
 ): void {
-  const assertion: StateAssertion = {
+  client.assertState({
     kind: "benchmark_result_label_consistency",
     target_id: `feed.post-card.${postId}.agent-results`,
     expected: {
@@ -54,8 +54,7 @@ export function emitLabelAssertion(
       source: "feed_render",
       results: normalize(renderedResults),
     },
-    metadata: { task_id: taskId, post_id: postId },
-  };
-
-  client.assertState(assertion);
+    task_id: taskId,
+    post_id: postId,
+  });
 }

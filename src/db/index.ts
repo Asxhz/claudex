@@ -21,6 +21,7 @@ export const db = new Proxy({} as ReturnType<typeof createDb>, {
 });
 
 export function createSourceDb(url: string) {
-  const sql = postgres(url, { max: 5 });
-  return drizzle(sql, { schema });
+  const client = postgres(url, { max: 5 });
+  const d = drizzle(client, { schema });
+  return { db: d, close: () => client.end() };
 }

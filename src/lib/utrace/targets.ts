@@ -113,3 +113,35 @@ export function authTargets(pathname: string): TargetEntry[] {
     target("auth.submit-button", "Submit Button", "button", pathname, "auth"),
   ];
 }
+
+export function dashboardTargets(pathname: string): TargetEntry[] {
+  return [
+    target("profile.current-user", "Current User", "card", pathname, "dashboard"),
+  ];
+}
+
+export function deriveRouteTargets(pathname: string): TargetEntry[] {
+  const benchmarkPublish = pathname.match(/^\/benchmarks\/([^/]+)\/publish$/);
+  if (benchmarkPublish) {
+    return benchmarkTargets(pathname, benchmarkPublish[1], []);
+  }
+
+  if (pathname === "/feed") {
+    return [target("feed.post-list", "Feed Post List", "list", pathname, "feed")];
+  }
+
+  const postDetail = pathname.match(/^\/feed\/([^/]+)$/);
+  if (postDetail) {
+    return postDetailTargets(pathname, postDetail[1], []);
+  }
+
+  if (pathname === "/login" || pathname === "/signup") {
+    return authTargets(pathname);
+  }
+
+  if (pathname === "/dashboard") {
+    return dashboardTargets(pathname);
+  }
+
+  return [];
+}

@@ -1,19 +1,21 @@
 import type {
   UTraceBootstrap,
-  UTraceMessage,
-  RouteState,
+  PreviewMessage,
+  TelemetryBundlePayload,
   TargetEntry,
-  InteractionEvent,
-  ApiObservation,
-  StateAssertion,
 } from "./types";
+import { deriveRouteTargets } from "./targets";
+
+let msgCounter = 0;
+function nextMessageId(): string {
+  return `msg_${Date.now().toString(36)}_${(++msgCounter).toString(36)}`;
+}
 
 export class UTraceClient {
   private ws: WebSocket | null = null;
   private bootstrap: UTraceBootstrap;
   private queue: string[] = [];
-  private startTime = Date.now();
-  private heartbeatTimer: ReturnType<typeof setInterval> | null = null;
+  private pingTimer: ReturnType<typeof setInterval> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private destroyed = false;
 
@@ -25,12 +27,12 @@ export class UTraceClient {
     if (this.destroyed) return;
 
     try {
-      const url = new URL(this.bootstrap.ws_url);
-      url.searchParams.set("session_id", this.bootstrap.session_id);
-      url.searchParams.set("preview_id", this.bootstrap.preview_id);
-      url.searchParams.set("client_id", this.bootstrap.client_id);
+      const apiUrl = process.env.NEXT_PUBLIC_UTRACE_API_URL || "https://api.utrace.dev";
+      const base = new URL(apiUrl);
+      const wsProtocol = base.protocol === "https:" ? "wss:" : "ws:";
+      const wsUrl = `${wsProtocol}//${base.host}${this.bootstrap.websocketPath}`;
 
-      this.ws = new WebSocket(url.toString());
+      this.ws = new WebSocket(wsUrl, this.bootstrap.previewSocketToken);
 
       this.ws.onopen = () => {
         for (const msg of this.queue) {
@@ -38,11 +40,15 @@ export class UTraceClient {
         }
         this.queue = [];
 
-        this.heartbeatTimer = setInterval(() => {
-          this.send({
-            type: "heartbeat",
-            payload: { uptime_ms: Date.now() - this.startTime },
-            timestamp: new Date().toISOString(),
+        this.pingTimer = setInterval(() => {
+          this.sendRaw({
+            type: "preview.ping",
+            message_id: nextMessageId(),
+            sent_at: new Date().toISOString(),
+            source: "preview_sdk",
+            session_id: this.bootstrap.sessionId,
+            preview_id: this.bootstrap.previewId,
+            payload: {},
           });
         }, 15_000);
       };
@@ -62,7 +68,7 @@ export class UTraceClient {
     }
   }
 
-  private send(message: UTraceMessage): void {
+  private sendRaw(message: PreviewMessage): void {
     const serialized = JSON.stringify(message);
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(serialized);
@@ -72,9 +78,9 @@ export class UTraceClient {
   }
 
   private clearTimers(): void {
-    if (this.heartbeatTimer) {
-      clearInterval(this.heartbeatTimer);
-      this.heartbeatTimer = null;
+    if (this.pingTimer) {
+      clearInterval(this.pingTimer);
+      this.pingTimer = null;
     }
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
@@ -82,65 +88,47 @@ export class UTraceClient {
     }
   }
 
-  observeRouteState(state: RouteState): void {
-    this.send({
-      type: "route_state",
-      payload: state,
-      timestamp: new Date().toISOString(),
+  sendTelemetryBundle(payload: TelemetryBundlePayload): void {
+    this.sendRaw({
+      type: "preview.telemetry_bundle",
+      message_id: nextMessageId(),
+      sent_at: new Date().toISOString(),
+      source: "preview_sdk",
+      session_id: this.bootstrap.sessionId,
+      preview_id: this.bootstrap.previewId,
+      payload,
     });
   }
 
-  registerTargets(targets: TargetEntry[]): void {
-    this.send({
-      type: "target_registry",
-      payload: targets,
-      timestamp: new Date().toISOString(),
+  sendTelemetryEvent(eventType: string, payload: Record<string, unknown>): void {
+    this.sendRaw({
+      type: "preview.telemetry_event",
+      message_id: nextMessageId(),
+      sent_at: new Date().toISOString(),
+      source: "preview_sdk",
+      session_id: this.bootstrap.sessionId,
+      preview_id: this.bootstrap.previewId,
+      payload: { event_type: eventType, ...payload },
     });
   }
 
-  observeInteraction(event: InteractionEvent): void {
-    this.send({
-      type: "interaction",
-      payload: event,
-      timestamp: new Date().toISOString(),
-    });
+  observeInteraction(event: { kind: string; target_id: string; action: string; metadata?: Record<string, unknown> }): void {
+    this.sendTelemetryEvent("interaction", event);
   }
 
-  observeApiResult(observation: ApiObservation): void {
-    this.send({
-      type: "api_observation",
-      payload: observation,
-      timestamp: new Date().toISOString(),
-    });
+  observeApiResult(observation: { method: string; route_template: string; status_code: number; summary: string }): void {
+    this.sendTelemetryEvent("api_observation", observation);
   }
 
-  assertState(assertion: StateAssertion): void {
-    const matched =
-      JSON.stringify(assertion.expected.results) ===
-      JSON.stringify(assertion.actual.results);
-
-    this.send({
-      type: "state_assertion_observed",
-      payload: { ...assertion, matched },
-      timestamp: new Date().toISOString(),
-    });
+  assertState(assertion: Record<string, unknown>): void {
+    const expected = assertion.expected as { results: unknown[] } | undefined;
+    const actual = assertion.actual as { results: unknown[] } | undefined;
+    const matched = JSON.stringify(expected?.results) === JSON.stringify(actual?.results);
+    this.sendTelemetryEvent("state_assertion_observed", { ...assertion, matched });
   }
 
-  observeError(message: string, source: string): void {
-    let hash = 0;
-    for (let i = 0; i < message.length; i++) {
-      hash = (hash << 5) - hash + message.charCodeAt(i);
-      hash |= 0;
-    }
-    this.send({
-      type: "error",
-      payload: {
-        message: message.slice(0, 200),
-        stack_hash: Math.abs(hash).toString(16),
-        source,
-      },
-      timestamp: new Date().toISOString(),
-    });
+  getRouteTargets(pathname: string): TargetEntry[] {
+    return deriveRouteTargets(pathname);
   }
 
   destroy(): void {
@@ -152,6 +140,14 @@ export class UTraceClient {
   }
 }
 
+const TRUSTED_HOSTS = [
+  "api.utrace.dev",
+  "ws.utrace.dev",
+  "preview.utrace.dev",
+  "localhost",
+  "127.0.0.1",
+];
+
 export function parseBootstrapHash(): UTraceBootstrap | null {
   if (typeof window === "undefined") return null;
 
@@ -162,30 +158,21 @@ export function parseBootstrapHash(): UTraceBootstrap | null {
   try {
     const encoded = hash.slice(prefix.length);
     const decoded = atob(encoded);
-    const parsed = JSON.parse(decoded) as UTraceBootstrap;
+    const parsed = JSON.parse(decoded);
 
-    if (!parsed.ws_url || !parsed.session_id || !parsed.preview_id) {
+    if (!parsed.sessionId || !parsed.previewId || !parsed.websocketPath || !parsed.previewSocketToken) {
       return null;
     }
 
-    const TRUSTED_HOSTS = [
-      "api.utrace.dev",
-      "ws.utrace.dev",
-      "preview.utrace.dev",
-      "localhost",
-      "127.0.0.1",
-    ];
-
+    const apiUrl = process.env.NEXT_PUBLIC_UTRACE_API_URL || "https://api.utrace.dev";
     try {
-      const wsUrl = new URL(parsed.ws_url);
-      if (!["wss:", "ws:"].includes(wsUrl.protocol)) return null;
-      if (wsUrl.protocol === "ws:" && wsUrl.hostname !== "localhost" && wsUrl.hostname !== "127.0.0.1") return null;
-      if (!TRUSTED_HOSTS.includes(wsUrl.hostname)) return null;
+      const base = new URL(apiUrl);
+      if (!TRUSTED_HOSTS.includes(base.hostname)) return null;
     } catch {
       return null;
     }
 
-    return parsed;
+    return parsed as UTraceBootstrap;
   } catch {
     return null;
   }

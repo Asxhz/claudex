@@ -10,6 +10,8 @@ import { useUTrace } from "@/components/UTraceProvider";
 import { benchmarkTargets } from "@/lib/utrace/targets";
 import { observePublishApi } from "@/lib/utrace/api-observations";
 import { captureDraftResults } from "@/lib/utrace/assertions";
+import { deriveRouteState } from "@/lib/utrace/route-state";
+import { collectDomSummary, collectAccessibilitySummary } from "@/lib/utrace/dom-summary";
 
 const resultColor: Record<string, string> = {
   passed: "#22C55E",
@@ -36,7 +38,14 @@ export default function PublishForm({
   useEffect(() => {
     if (!utrace) return;
     const agents = runs.map((r) => r.agent_name);
-    utrace.registerTargets(benchmarkTargets(window.location.pathname, taskId, agents));
+    const pathname = window.location.pathname;
+    utrace.sendTelemetryBundle({
+      route_state: deriveRouteState(pathname),
+      target_registry: benchmarkTargets(pathname, taskId, agents),
+      dom_summary: collectDomSummary(),
+      accessibility_summary: collectAccessibilitySummary(),
+      meaningful: true,
+    });
     captureDraftResults(taskId, runs.map((r) => ({ agent_name: r.agent_name, result: r.result })));
   }, [utrace, taskId, runs]);
 

@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { getCurrentUser } from "@/lib/auth";
 
-const ALLOWED_CALLBACK_ORIGINS = [
-  "https://www.utrace.dev",
-  "https://utrace.dev",
-  "http://localhost:3001",
-];
+const DEFAULT_ORIGINS = "https://api.utrace.dev,https://utrace.dev,https://www.utrace.dev,http://localhost:3001";
+
+function getAllowedOrigins(): string[] {
+  const env = process.env.UTRACE_ALLOWED_CALLBACK_ORIGINS || DEFAULT_ORIGINS;
+  return env.split(",").map((o) => o.trim()).filter(Boolean);
+}
 
 export async function POST(request: NextRequest) {
   const user = await getCurrentUser();
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
   }
 
   const origin = parsed.origin;
-  if (!ALLOWED_CALLBACK_ORIGINS.includes(origin)) {
+  if (!getAllowedOrigins().includes(origin)) {
     return NextResponse.json({ error: "Callback URL not allowed" }, { status: 403 });
   }
 

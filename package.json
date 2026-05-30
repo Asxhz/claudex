@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test:utrace": "tsx tests/utrace/run.ts",
+    "verify": "npm run typecheck && npm run test:utrace && npm run build"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
