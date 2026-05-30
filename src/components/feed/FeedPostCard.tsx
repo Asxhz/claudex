@@ -1,8 +1,14 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import type { FeedPost, User } from "@/types";
 import { timeAgo, fakeEngagement } from "@/lib/utils";
 import Avatar from "@/components/ui/Avatar";
 import AgentResultBadge from "@/components/feed/AgentResultBadge";
+import { useUTrace } from "@/components/UTraceProvider";
+import { getDraftResults } from "@/lib/utrace/assertions";
+import { emitLabelAssertion } from "@/lib/utrace/assertions";
 
 interface FeedPostCardProps {
   post: FeedPost & { author: User };
@@ -12,10 +18,21 @@ interface FeedPostCardProps {
 export default function FeedPostCard({ post }: FeedPostCardProps) {
   const published = post.published_at ?? post.created_at;
   const engagement = fakeEngagement(post.id);
+  const utrace = useUTrace();
+
+  useEffect(() => {
+    if (!utrace || !post.task_id) return;
+    const draft = getDraftResults(post.task_id);
+    if (!draft) return;
+    const rendered = (post.agent_results as Array<{ agent_name: string; result: string }>).map(
+      (r) => ({ agent_name: r.agent_name, result: r.result })
+    );
+    emitLabelAssertion(utrace, post.id, post.task_id, draft, rendered);
+  }, [utrace, post.id, post.task_id, post.agent_results]);
 
   return (
     <Link href={post.is_draft ? `/benchmarks/${post.task_id}` : `/feed/${post.id}`} className="block">
-      <article className="px-4 py-3 border-b border-[#2f3336] post-hover transition-colors duration-150 cursor-pointer">
+      <article className="px-4 py-3 border-b border-[#2f3336] post-hover transition-colors duration-150 cursor-pointer" data-utrace-target={`feed.post-card.${post.id}`}>
         <div className="flex gap-3">
           {/* Avatar */}
           <div className="shrink-0 pt-0.5">
@@ -58,7 +75,7 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
 
             {/* Agent result badges */}
             {post.agent_results.length > 0 && (
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
+              <div className="mt-2.5 flex flex-wrap gap-1.5" data-utrace-target={`feed.post-card.${post.id}.agent-results`}>
                 {post.agent_results.map((ar) => (
                   <AgentResultBadge
                     key={ar.agent_name}

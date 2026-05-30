@@ -47,7 +47,7 @@ export default function LoginForm() {
           Enter your credentials to continue
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4" data-utrace-target="auth.sign-in-form">
           <div>
             <label htmlFor="login-email" className="block text-sm font-medium text-[#8b8d93] mb-1.5">
               Email
@@ -60,6 +60,7 @@ export default function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-[#2f3336] bg-black px-3 py-2 text-sm text-[#e7e9ea] placeholder:text-[#536471] focus:outline-none focus:border-[#1d9bf0]/50 transition-colors duration-150"
               placeholder="you@example.com"
+              data-utrace-target="auth.email-input"
             />
           </div>
 
@@ -80,7 +81,7 @@ export default function LoginForm() {
 
           {error && <p className="text-xs text-[#EF4444]">{error}</p>}
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading} data-utrace-target="auth.submit-button">
             {loading ? (
               <>
                 <svg

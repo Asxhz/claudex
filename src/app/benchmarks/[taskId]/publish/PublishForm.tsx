@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { BenchmarkTask, BenchmarkRun } from "@/types";
 import RunCard from "@/components/benchmark/RunCard";
 import BarChart from "@/components/benchmark/BarChart";
 import Button from "@/components/ui/Button";
+import { useUTrace } from "@/components/UTraceProvider";
+import { benchmarkTargets } from "@/lib/utrace/targets";
+import { observePublishApi } from "@/lib/utrace/api-observations";
+import { captureDraftResults } from "@/lib/utrace/assertions";
 
 const resultColor: Record<string, string> = {
   passed: "#22C55E",
@@ -27,6 +31,15 @@ export default function PublishForm({
   draftBody,
 }: PublishFormProps) {
   const router = useRouter();
+  const utrace = useUTrace();
+
+  useEffect(() => {
+    if (!utrace) return;
+    const agents = runs.map((r) => r.agent_name);
+    utrace.registerTargets(benchmarkTargets(window.location.pathname, taskId, agents));
+    captureDraftResults(taskId, runs.map((r) => ({ agent_name: r.agent_name, result: r.result })));
+  }, [utrace, taskId, runs]);
+
   const [body, setBody] = useState(
     draftBody ||
       `Benchmark results for "${task.title}"\n\n${runs
@@ -51,11 +64,20 @@ export default function PublishForm({
     setError(null);
 
     try {
+      utrace?.observeInteraction({
+        kind: "click",
+        target_id: "benchmark.publish-button",
+        action: "publish_benchmark_post",
+        metadata: { task_id: taskId, source_route: "benchmark_publish" },
+      });
+
       const res = await fetch(`/api/posts/${taskId}/publish`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ body: body.trim() }),
       });
+
+      if (utrace) observePublishApi(utrace, taskId, res.status);
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -164,13 +186,15 @@ export default function PublishForm({
 
       {/* Agent Results */}
       {runs.length > 0 && (
-        <div className="mt-6 animate-fade-in stagger-3">
+        <div className="mt-6 animate-fade-in stagger-3" data-utrace-target="benchmark.draft-results">
           <h2 className="text-xs font-medium uppercase tracking-wider text-[#8b8d93] mb-3">
             Agent Results
           </h2>
           <div className="grid gap-4">
             {runs.map((run) => (
-              <RunCard key={run.id} run={run} />
+              <div key={run.id} data-utrace-target={`benchmark.draft-result-row.${run.agent_name}`}>
+                <RunCard run={run} />
+              </div>
             ))}
           </div>
         </div>
@@ -239,7 +263,7 @@ export default function PublishForm({
         )}
 
         <div className="mt-5 flex items-center gap-3">
-          <Button type="submit" disabled={loading || !body.trim()}>
+          <Button type="submit" disabled={loading || !body.trim()} data-utrace-target="benchmark.publish-button">
             {loading ? (
               <>
                 <svg

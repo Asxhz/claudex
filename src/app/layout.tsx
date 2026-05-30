@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/nav/TopNav";
+import UTraceProvider from "@/components/UTraceProvider";
 import { getCurrentUser } from "@/lib/auth";
 
 const inter = Inter({
@@ -27,8 +28,10 @@ export default async function RootLayout({
         className={`${inter.className} bg-black text-[#e7e9ea] antialiased min-h-screen`}
         style={{ fontFeatureSettings: '"calt", "kern", "liga", "ss03"' }}
       >
-        <TopNav user={user} />
-        <main className="pt-14">{children}</main>
+        <UTraceProvider>
+          <TopNav user={user} />
+          <main className="pt-14">{children}</main>
+        </UTraceProvider>
       </body>
     </html>
   );

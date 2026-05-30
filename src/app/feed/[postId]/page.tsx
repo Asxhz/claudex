@@ -167,7 +167,7 @@ export default async function PostDetailPage({
           </div>
 
           {/* Full post */}
-          <article className="px-4 pt-3 pb-0">
+          <article className="px-4 pt-3 pb-0" data-utrace-target={`post.detail.${postId}`}>
             {/* Author row */}
             <div className="flex items-center gap-3">
               <Avatar
@@ -192,7 +192,7 @@ export default async function PostDetailPage({
 
             {/* Agent result badges */}
             {agentResults.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-1.5">
+              <div className="mt-3 flex flex-wrap gap-1.5" data-utrace-target={`post.detail.${postId}.agent-results`}>
                 {agentResults.map((ar) => (
                   <AgentResultBadge
                     key={ar.agent_name}
@@ -270,7 +270,7 @@ export default async function PostDetailPage({
           </article>
 
           {/* Reply input and comments */}
-          <div className="border-t border-[#2f3336]">
+          <div className="border-t border-[#2f3336]" data-utrace-target={`post.detail.${postId}.comments`}>
             <CommentThread initialComments={commentsWithAuthor} postId={postId} />
           </div>
         </main>

@@ -146,7 +146,7 @@ export default function CommentThread({ initialComments, postId }: CommentThread
   return (
     <div>
       {/* Reply input area - Twitter style */}
-      <form onSubmit={handleSubmit} className="px-4 py-3 border-b border-[#2f3336]">
+      <form onSubmit={handleSubmit} className="px-4 py-3 border-b border-[#2f3336]" data-utrace-target={`post.detail.${postId}.comment-composer`}>
         <div className="flex items-start gap-3">
           <Avatar handle="you" displayName="You" size="md" />
           <div className="flex-1 pt-2">
@@ -163,6 +163,7 @@ export default function CommentThread({ initialComments, postId }: CommentThread
                 type="submit"
                 disabled={!body.trim() || loading}
                 className="bg-[#1d9bf0] hover:bg-[#1a8cd8] disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium text-[15px] rounded-full px-5 py-1.5 transition-colors duration-150 cursor-pointer"
+                data-utrace-target={`post.detail.${postId}.comment-submit`}
               >
                 {loading ? "Posting..." : "Reply"}
               </button>
