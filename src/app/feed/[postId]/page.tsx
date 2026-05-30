@@ -5,9 +5,9 @@ import { eq, desc } from "drizzle-orm";
 import type { AgentResult, Comment, User } from "@/types";
 import Avatar from "@/components/ui/Avatar";
 import AgentResultCard from "@/components/feed/AgentResultCard";
-import AgentResultBadge from "@/components/feed/AgentResultBadge";
 import CommentThread from "@/components/feed/CommentThread";
 import { timeAgo } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 
 export default async function PostDetailPage({
   params,
@@ -44,6 +44,13 @@ export default async function PostDetailPage({
   if (!postRows.length) notFound();
 
   const post = postRows[0];
+
+  if (post.is_draft) {
+    const currentUser = await getCurrentUser();
+    if (!currentUser || currentUser.id !== post.author_id) {
+      notFound();
+    }
+  }
   const agentResults = post.agent_results as AgentResult[];
   const published = post.published_at ?? post.created_at;
 
